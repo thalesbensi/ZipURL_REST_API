@@ -1,8 +1,11 @@
 package com.thalesbensi.ZipURL.domain.services;
 
+import com.thalesbensi.ZipURL.api.dtos.ShortUrlResponseDTO;
 import com.thalesbensi.ZipURL.domain.models.ShortURL;
 import com.thalesbensi.ZipURL.domain.repositories.ShortUrlRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ShortUrlService {
@@ -11,6 +14,11 @@ public class ShortUrlService {
 
     public ShortUrlService(ShortUrlRepository shortUrlRepository) {
         this.shortUrlRepository = shortUrlRepository;
+    }
+
+    public List<ShortUrlResponseDTO> listAll() {
+        List<ShortURL> shortURLS = shortUrlRepository.findAll();
+        return shortURLS.stream().map(ShortUrlResponseDTO::fromEntity).toList();
     }
 
     public String getOriginalUrl(String shortCode) {
@@ -30,12 +38,6 @@ public class ShortUrlService {
         return shortCode;
     }
 
-
-
-
-
-
-
     private String generateShortCode() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder shortCode = new StringBuilder();
@@ -45,8 +47,6 @@ public class ShortUrlService {
         }
         return shortCode.toString();
     }
-
-
 }
 
 
