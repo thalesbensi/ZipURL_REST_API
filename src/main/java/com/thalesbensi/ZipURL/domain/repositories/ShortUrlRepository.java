@@ -1,8 +1,11 @@
 package com.thalesbensi.ZipURL.domain.repositories;
 
 import com.thalesbensi.ZipURL.domain.models.ShortURL;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ShortUrlRepository
-        extends CrudRepository<ShortURL,String> {
+import java.util.Optional;
+
+public interface ShortUrlRepository extends MongoRepository<ShortURL, String> {
+    Optional<ShortURL> findByShortCode(String shortCode);
 }
+
