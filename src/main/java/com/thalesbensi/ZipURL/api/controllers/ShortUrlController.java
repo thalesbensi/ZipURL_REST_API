@@ -1,15 +1,16 @@
 package com.thalesbensi.ZipURL.api.controllers;
 
+import com.thalesbensi.ZipURL.api.dtos.ShortUrlRequestDTO;
 import com.thalesbensi.ZipURL.domain.services.ShortUrlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/shorturl")
+@RequestMapping("zip")
 public class ShortUrlController {
 
-    final ShortUrlService shortUrlService;
+    private final ShortUrlService shortUrlService;
 
     public ShortUrlController(ShortUrlService shortUrlService) {
         this.shortUrlService = shortUrlService;
@@ -27,11 +28,12 @@ public class ShortUrlController {
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<String> createShortUrl(@RequestBody String originalUrl) {
-        String shortedUrl = shortUrlService.createShortUrl(originalUrl);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(shortedUrl);
+    @PostMapping
+    public ResponseEntity<String> createShortUrl(@RequestBody ShortUrlRequestDTO shortUrlRequestDTO) {
+        String shortedUrl = shortUrlService.createShortUrl(shortUrlRequestDTO.originalUrl());
+        return ResponseEntity.status(HttpStatus.CREATED).body(shortedUrl);
     }
-
 }
+
+
+
