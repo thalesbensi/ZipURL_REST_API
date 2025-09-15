@@ -3,6 +3,7 @@ package com.thalesbensi.ZipURL.domain.services;
 import com.thalesbensi.ZipURL.api.dtos.ShortUrlResponseDTO;
 import com.thalesbensi.ZipURL.domain.models.ShortURL;
 import com.thalesbensi.ZipURL.domain.repositories.ShortUrlRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class ShortUrlService {
         this.shortUrlRepository = shortUrlRepository;
     }
 
+    @Cacheable("urlList")
     public List<ShortUrlResponseDTO> listAll() {
         List<ShortURL> shortURLS = shortUrlRepository.findAll();
         return shortURLS.stream().map(ShortUrlResponseDTO::fromEntity).toList();
