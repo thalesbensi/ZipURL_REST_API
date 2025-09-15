@@ -2,7 +2,6 @@ package com.thalesbensi.ZipURL.api.controllers;
 
 import com.thalesbensi.ZipURL.api.dtos.ShortUrlRequestDTO;
 import com.thalesbensi.ZipURL.api.dtos.ShortUrlResponseDTO;
-import com.thalesbensi.ZipURL.domain.models.ShortURL;
 import com.thalesbensi.ZipURL.domain.services.ShortUrlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
