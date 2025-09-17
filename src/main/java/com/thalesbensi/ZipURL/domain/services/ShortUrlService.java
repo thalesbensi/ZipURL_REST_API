@@ -3,6 +3,8 @@ package com.thalesbensi.ZipURL.domain.services;
 import com.thalesbensi.ZipURL.api.dtos.ShortUrlResponseDTO;
 import com.thalesbensi.ZipURL.domain.models.ShortURL;
 import com.thalesbensi.ZipURL.domain.repositories.ShortUrlRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +35,14 @@ public class ShortUrlService {
         return null;
     }
 
+    @CacheEvict(value = "urlList", allEntries = true)
     public String createShortUrl(String originalUrl) {
         String shortCode = generateShortCode();
-        ShortURL shortURL = new ShortURL(originalUrl,shortCode);
+        ShortURL shortURL = new ShortURL(originalUrl, shortCode);
         shortUrlRepository.save(shortURL);
         return shortCode;
     }
+
 
     private String generateShortCode() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
