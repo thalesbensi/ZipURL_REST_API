@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface ShortUrlRepository extends MongoRepository<ShortURL, String> {
     Optional<ShortURL> findByShortCode(String shortCode);
+
     Page<ShortURL> findAll(Pageable pageable);
 }
 

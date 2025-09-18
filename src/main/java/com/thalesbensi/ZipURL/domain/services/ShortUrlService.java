@@ -26,6 +26,12 @@ public class ShortUrlService {
         return shortURLS.stream().map(ShortUrlResponseDTO::fromEntity).toList();
     }
 
+    @CacheEvict(value = "urlList", allEntries = true)
+    public List<ShortUrlResponseDTO> listAllWithoutCache(int page, int size) {
+        List<ShortURL> shortURLS = shortUrlRepository.findAll(PageRequest.of(page, size)).toList();
+        return shortURLS.stream().map(ShortUrlResponseDTO::fromEntity).toList();
+    }
+
     public String getOriginalUrl(String shortCode) {
         ShortURL shortURL = shortUrlRepository.findByShortCode(shortCode).orElse(null);
         if (shortURL != null) {
@@ -43,7 +49,6 @@ public class ShortUrlService {
         shortUrlRepository.save(shortURL);
         return shortCode;
     }
-
 
     private String generateShortCode() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

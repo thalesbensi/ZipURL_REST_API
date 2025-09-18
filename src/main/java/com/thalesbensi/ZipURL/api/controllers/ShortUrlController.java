@@ -27,6 +27,12 @@ public class ShortUrlController {
         return ResponseEntity.ok(shortUrlService.listAll(page, size));
     }
 
+    @GetMapping("admin/list/no-cache")
+    public ResponseEntity<List<ShortUrlResponseDTO>> listAllWithoutCache(@RequestParam int page,
+                                                             @RequestParam int size) {
+        return ResponseEntity.ok(shortUrlService.listAllWithoutCache(page, size));
+    }
+
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortCode) {
         String originalUrl = shortUrlService.getOriginalUrl(shortCode);
@@ -37,7 +43,6 @@ public class ShortUrlController {
                 .header("Location", originalUrl)
                 .build();
     }
-
 
     @PostMapping
     public ResponseEntity<String> createShortUrl(@Valid @RequestBody ShortUrlRequestDTO shortUrlRequestDTO) {
