@@ -6,6 +6,7 @@ import com.thalesbensi.ZipURL.domain.repositories.ShortUrlRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ShortUrlService {
     }
 
     @Cacheable("urlList")
-    public List<ShortUrlResponseDTO> listAll() {
-        List<ShortURL> shortURLS = shortUrlRepository.findAll();
+    public List<ShortUrlResponseDTO> listAll(int page, int size) {
+        List<ShortURL> shortURLS = shortUrlRepository.findAll(PageRequest.of(page, size)).toList();
         return shortURLS.stream().map(ShortUrlResponseDTO::fromEntity).toList();
     }
 

@@ -22,8 +22,9 @@ public class ShortUrlController {
     }
 
     @GetMapping("admin/list")
-    public ResponseEntity<List<ShortUrlResponseDTO>> listAll() {
-        return ResponseEntity.ok(shortUrlService.listAll());
+    public ResponseEntity<List<ShortUrlResponseDTO>> listAll(@RequestParam int page,
+                                                             @RequestParam int size) {
+        return ResponseEntity.ok(shortUrlService.listAll(page, size));
     }
 
     @GetMapping("/{shortCode}")
