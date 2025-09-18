@@ -2,6 +2,7 @@ package com.thalesbensi.ZipURL.api.controllers;
 
 import com.thalesbensi.ZipURL.api.dtos.ShortUrlRequestDTO;
 import com.thalesbensi.ZipURL.api.dtos.ShortUrlResponseDTO;
+import com.thalesbensi.ZipURL.domain.exceptions.ShortUrlNotFoundException;
 import com.thalesbensi.ZipURL.domain.services.ShortUrlService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,14 @@ public class ShortUrlController {
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortCode) {
         String originalUrl = shortUrlService.getOriginalUrl(shortCode);
-        if (originalUrl != null) {
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .header("Location", originalUrl)
-                    .build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (originalUrl == null) {
+            throw new ShortUrlNotFoundException(shortCode);
         }
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", originalUrl)
+                .build();
     }
+
 
     @PostMapping
     public ResponseEntity<String> createShortUrl(@Valid @RequestBody ShortUrlRequestDTO shortUrlRequestDTO) {
