@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("zip")
+@RequestMapping()
 public class ShortUrlController {
 
     private final ShortUrlService shortUrlService;
@@ -21,13 +21,13 @@ public class ShortUrlController {
         this.shortUrlService = shortUrlService;
     }
 
-    @GetMapping("admin/list")
+    @GetMapping("admin/urls")
     public ResponseEntity<List<ShortUrlResponseDTO>> listAll(@RequestParam int page,
                                                              @RequestParam int size) {
         return ResponseEntity.ok(shortUrlService.listAll(page, size));
     }
 
-    @GetMapping("admin/list/no-cache")
+    @GetMapping("admin/urls/no-cache")
     public ResponseEntity<List<ShortUrlResponseDTO>> listAllWithoutCache(@RequestParam int page,
                                                              @RequestParam int size) {
         return ResponseEntity.ok(shortUrlService.listAllWithoutCache(page, size));
@@ -44,7 +44,7 @@ public class ShortUrlController {
                 .build();
     }
 
-    @PostMapping
+    @PostMapping("/shorten")
     public ResponseEntity<String> createShortUrl(@Valid @RequestBody ShortUrlRequestDTO shortUrlRequestDTO) {
         String shortedUrl = shortUrlService.createShortUrl(shortUrlRequestDTO.originalUrl());
         return ResponseEntity.status(HttpStatus.CREATED).body(shortedUrl);
