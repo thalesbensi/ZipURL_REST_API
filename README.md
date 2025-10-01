@@ -95,11 +95,7 @@ A aplicação estará disponível em:
 **Resposta:**
 
 ```json
-{
-  "shortUrl": "http://localhost:8080/abc123",
-  "originalUrl": "https://www.exemplo.com/artigo/123",
-}
-
+shortCode: "abc123"
 ```
 
 ## 📄 Documentação da API
@@ -135,6 +131,8 @@ services:
     container_name: zipurl-mongodb
     restart: always
     environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB}
     ports:
       - "${MONGO_PORT}:27017"
@@ -161,9 +159,10 @@ services:
       - mongodb
       - redis
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb:${MONGO_PORT}/${MONGO_DB}
+      SPRING_DATA_MONGODB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: ${REDIS_PORT}
+      SPRING_REDIS_PASSWORD: ${REDIS_PASSWORD}
 
 volumes:
   mongodb_data:
@@ -193,14 +192,16 @@ docker-compose up --build
 Para facilitar a configuração das variáveis de ambiente, você pode criar um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
 ```# MongoDB
+MONGO_USER=admin
+MONGO_PASSWORD=admin123
 MONGO_DB=zipurl
 MONGO_PORT=27017
+MONGODB_URI=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:${MONGO_PORT}/${MONGO_DB}?authSource=admin
 
-# Redis
-REDIS_HOST=redis
+REDIS_HOST=localhost
 REDIS_PORT=6379
+REDIS_PASSWORD=redis123
 
-# API
-SPRING_PORT=8080
+SPRING_PORT = 8080
 ```
 
